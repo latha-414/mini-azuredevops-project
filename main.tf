@@ -25,6 +25,8 @@ resource "azurerm_linux_web_app" "webapp" {
   service_plan_id     = azurerm_service_plan.appservice_plan.id
 
   site_config {
+    always_on = false   
+
     application_stack {
       node_version = "18-lts" # or use "java_version"
     }
