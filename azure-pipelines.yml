@@ -1,32 +1,32 @@
 trigger:
-- main   # pipeline runs on main branch
+- main   # runs on pushes to main branch
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-# Checkout code from GitHub
+# 1️⃣ Checkout code from GitHub
 - checkout: self
 
-# Archive your HTML files
+# 2️⃣ Archive your HTML files
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/myapp'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/myapp.zip'
     replaceExistingArchive: true
 
-# Publish the zipped artifact
+# 3️⃣ Publish the zipped artifact
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-# Deploy to Azure Web App
+# 4️⃣ Deploy to Azure Web App (staging slot)
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'my-azure-connection'
-    appName: 'demo-webapp-12345'
-    package: '$(Build.ArtifactStagingDirectory)/*.zip'
+    azureSubscription: 'my-azure-connection'    # your service connection
+    appName: 'demo-webapp-12345'              # your Web App name
+    package: '$(Build.ArtifactStagingDirectory)/myapp.zip'
