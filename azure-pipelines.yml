@@ -27,6 +27,6 @@ steps:
 # Deploy to Azure Web App
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'latha-414'   # created service connection to Azure
+    azureSubscription: 'my-azure-connection'   # created service connection to Azure
     appName: 'demo-webapp-12345'                        # your Azure Web App name
     package: '$(Build.ArtifactStagingDirectory)/*.zip'
